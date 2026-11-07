@@ -1,0 +1,27 @@
+replicaCount: 2
+image:
+  repository: safe-release
+  tag: local
+  digest: ""
+  pullPolicy: IfNotPresent
+app:
+  version: "1.0.0"
+  startupDelaySeconds: 0
+  failReadiness: false
+  failBusiness: false
+rollout:
+  maxUnavailable: 0
+  maxSurge: 1
+  minReadySeconds: 5
+  progressDeadlineSeconds: 60
+terminationGracePeriodSeconds: 30
+resources:
+  requests:
+    cpu: 50m
+    memory: 32Mi
+  limits:
+    cpu: 250m
+    memory: 96Mi
+pdb:
+  enabled: true
+  minAvailable: 1
