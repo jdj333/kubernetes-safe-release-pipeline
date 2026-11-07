@@ -1,0 +1,3 @@
+# Deliberate lab fault: readiness passes, but the business endpoint returns 500.
+app:
+  failBusiness: true
