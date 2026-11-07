@@ -1,0 +1,3 @@
+# Deliberate lab fault: alive and initialized, but unable to accept traffic.
+app:
+  failReadiness: true
