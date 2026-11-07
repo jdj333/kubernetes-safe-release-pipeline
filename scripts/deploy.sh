@@ -10,7 +10,8 @@ values_args=()
 helm lint "$CHART" "${values_args[@]}" --strict
 # No arbitrary kubectl context, release, or namespace may be supplied to this lab.
 k create namespace "$NAMESPACE" --dry-run=client -o yaml | k apply -f - >/dev/null
-releases="$(h list --all --filter "^${RELEASE}$" -o json)"
+# Helm 4 lists all statuses by default (Helm 3's --all was removed).
+releases="$(h list --filter "^${RELEASE}$" -o json)"
 previous="$(python3 -c 'import json,sys; r=json.load(sys.stdin); assert not r or r[0]["status"]=="deployed", "Recover the existing failed/pending release first"; print(r[0]["revision"] if r else "")' <<< "$releases")"
 old_version=""
 if [[ -n "$previous" ]]; then
