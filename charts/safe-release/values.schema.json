@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "replicaCount",
+    "image",
+    "app",
+    "rollout",
+    "terminationGracePeriodSeconds",
+    "resources",
+    "pdb"
+  ],
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "minimum": 2
+    },
+    "image": {
+      "type": "object",
+      "required": [
+        "repository",
+        "tag",
+        "digest",
+        "pullPolicy"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^$|^sha256:[a-f0-9]{64}$"
+        },
+        "pullPolicy": {
+          "enum": [
+            "IfNotPresent",
+            "Always",
+            "Never"
+          ]
+        }
+      }
+    },
+    "app": {
+      "type": "object",
+      "required": [
+        "version",
+        "startupDelaySeconds",
+        "failReadiness",
+        "failBusiness"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "startupDelaySeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 40
+        },
+        "failReadiness": {
+          "type": "boolean"
+        },
+        "failBusiness": {
+          "type": "boolean"
+        }
+      }
+    },
+    "rollout": {
+      "type": "object",
+      "required": [
+        "maxUnavailable",
+        "maxSurge",
+        "minReadySeconds",
+        "progressDeadlineSeconds"
+      ],
+      "properties": {
+        "maxUnavailable": {
+          "const": 0
+        },
+        "maxSurge": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minReadySeconds": {
+          "type": "integer",
+          "minimum": 5
+        },
+        "progressDeadlineSeconds": {
+          "type": "integer",
+          "minimum": 10
+        }
+      }
+    },
+    "terminationGracePeriodSeconds": {
+      "type": "integer",
+      "minimum": 20
+    },
+    "resources": {
+      "type": "object",
+      "required": [
+        "requests",
+        "limits"
+      ]
+    },
+    "pdb": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "minAvailable"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "minAvailable": {
+          "const": 1
+        }
+      }
+    }
+  }
+}
